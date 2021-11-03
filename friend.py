@@ -111,21 +111,21 @@ def login():
 
                 print("")
 
-    print("\033[0;97m[ Login Main Menu ]").center(50)
+                print("\033[0;97m[ Login Main Menu ]").center(50)
 
-    print("")
+                print("")
 
-    print("\033[1;97m[1]\033[1;91m > \033[1;97mlogin using token")
+                print("\033[1;97m[1]\033[1;91m > \033[1;97mlogin using token")
 
-    print("")
+                print("")
 
-    print("\033[1;97m[2]\033[1;91m > \033[1;97mlogin using password")
+                print("\033[1;97m[2]\033[1;91m > \033[1;97mlogin using password")
 
-    print("")
+                print("")
 
-    print("\033[1;97m[3]\033[1;91m > \033[1;97mMain menu back")
+                print("\033[1;97m[3]\033[1;91m > \033[1;97mMain menu back")
 
-    print("")
+                print("")
 
     login_select()
 
