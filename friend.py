@@ -107,7 +107,7 @@ def login():
 		menu() 
 	except (KeyError,IOError):
 		os.system('clear')
-		print logo
+	  	print logo
 
     print("")
 
