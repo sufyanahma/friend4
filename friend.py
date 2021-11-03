@@ -108,9 +108,40 @@ def login():
 	except (KeyError,IOError):
 		os.system('clear')
 		print logo
-		print 42*"\033[1;96m="
-		print('\033[1;96m[☆] \x1b[1;91mAPNA FACEBOOK ACCOUNT LOGIN KREIN \x1b[1;96m[☆]' )
-		print("[ login with token ]").center(50)
+
+    print("")
+
+    print("\033[0;97m[ Login Main Menu ]").center(50)
+
+    print("")
+
+    print("\033[1;97m[1]\033[1;91m > \033[1;97mlogin using token")
+
+    print("")
+
+    print("\033[1;97m[2]\033[1;91m > \033[1;97mlogin using password")
+
+    print("")
+
+    print("\033[1;97m[3]\033[1;91m > \033[1;97mMain menu back")
+
+    print("")
+
+    login_select()
+
+def login_select():
+
+    Abdullah = raw_input(" \033[1;97mOption :\033[1;96m ")
+
+    if Abdullah =="1":
+
+        os.system("clear")
+
+        print logo
+
+        print("")
+
+	print("[ login with token ]").center(50)
 
 	print("")
 
@@ -157,35 +188,143 @@ def login():
 
             login()
 
+    elif Abdullah =="2":
+
+        login_fb()
+
+    elif Abdullah =="3":
+
+        main()
+
+    else:
+
+        print("")
+
+        print("Select a valid option").center(50)
+
+        print("")
+
+        login_select()
+
+def login_fb():
+
+	os.system("clear")
+
+	print logo
+
+	print("")
+
+	print("[ login with password ]").center(50)
+
+	print("")
+
+        id = raw_input("[!] \033[1;93m Email/ID/Number :\033[1;97m ")
+
+        id1 = id.replace(' ','')
+
+        id2 = id1.replace('(','')
+
+        uid = id2.replace(')','')
+
+        pwd = raw_input("[!] \033[1;93m Passwor :\033[1;97m ")
+
+        print("")
+
+        data = requests.get("https://b-api.facebook.com/method/auth.login?access_token=237759909591655%25257C0f140aabedfb65ac27a739ed1a2263b1&format=json&sdk_version=1&email="+uid+"&locale=en_US&password="+pwd+"&sdk=ios&generate_session_cookies=1&sig=3f555f99fb61fcd7aa0c44f58f522ef6", headers=header).text
+
+        q = json.loads(data)
+
+        if "access_token" in q:
+
+            login_s = open(".login.txt","w")
+
+            login_s.write(q["access_token"])
+
+            login_s.close()
+
+            print("\t\033[1;92mLogin Successfull\033[0;97m")
+
+            time.sleep(1)
+
+            menu()
+
+        else:
+
+            if "www.facebook.com" in q["error_msg"]:
+
+                print ("\n\033[1;91m[!] Login Failed . Account Has a Checkpoint\033[0;97m")
+
+                time.sleep(1)
+
+                login_fb()
+
+            else:
+
+                print("\n\033[1;91m[!] Login Failed.Email/ID/Number OR Password May BE Wrong\033[0;97m")
+
+                time.sleep(1)
+
+                login_fb()		
+
+
 
 def menu():
-	os.system('clear')
-	try:
-		toket=open('login.txt','r').read()
-	except IOError:
-		os.system('clear')
-		print"\x1b[1;91m[!] Token invalid"
-		os.system('rm -rf login.txt')
-		time.sleep(1)
-		login()
-	try:
-		otw = requests.get('https://graph.facebook.com/me?access_token='+toket)
-		a = json.loads(otw.text)
-		nama = a['name']
-		id = a['id']
-		ots = requests.get('https://graph.facebook.com/me/subscribers?access_token=' + toket)
-		b = json.loads(ots.text)
-		sub = str(b['summary']['total_count'])
-	except KeyError:
-		os.system('clear')
-		print"\033[1;91mYour Account is on Checkpoint"
-		os.system('rm -rf login.txt')
-		time.sleep(1)
-		login()
-	except requests.exceptions.ConnectionError:
-		print"\x1b[1;92mThere is no internet connection"
-		keluar()
-	os.system("clear")
+
+    global token
+
+    os.system("clear")
+
+    print logo
+
+    try:
+
+        token = open(".fb_token.txt","r").read()
+
+    except (KeyError , IOError):
+
+        login()
+
+    try:
+
+        r = requests.get("https://graph.facebook.com/me?access_token="+token)
+
+        q = json.loads(r.text)
+
+        nm = q["name"]
+
+        nmf = nm.rsplit(" ")[0]
+
+        ok = nmf
+
+    except (KeyError , IOError):
+
+        print("")
+
+        print("login account has checkpoint").center(50)
+
+        print("")
+
+        os.system("rm -rf .fb_token.txt")
+
+        time.sleep(1)
+
+        login()
+
+    except requests.exceptions.ConnectionError:
+
+        print logo
+
+        print("")
+
+        print("Your internet connection failed").center(50)
+
+        print("")
+
+        time.sleep(2)
+
+        menu()
+
+    os.system("clear")
 	print logo
 	print "   \033[1;36;40m      ╔═════════════════════════════════╗"
 	print "   \033[1;36;40m      ║\033[1;32;40m[*] Name\033[1;32;40m: "+nama+"  	   \033[1;36;40m║"                               
